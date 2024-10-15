@@ -8,11 +8,12 @@ public class MovementController : MonoBehaviour
 {
 
     Rigidbody playerRb;
-    public float thrust = 5;
-    public int score = 0;
-    public int scoreToGet;
-    private bool wPressed, sPressed, aPressed, dPressed;
-    Vector3 movement;
+    public float thrust = 6;
+    public float jumpStrength = 0;
+    private int score = 0;
+    private int scoreToGet;
+    private bool isJumpTrue, isGrounded=true;
+    Vector3 movement,jump;
 
     // Start is called before the first frame update
     void Start()
@@ -27,15 +28,23 @@ public class MovementController : MonoBehaviour
     {
         if (collision.gameObject.tag == "point" && scoreToGet>0)
         {
-            score++;
-            print("Your score: " + score);
-            scoreToGet--;
+            score+=1;
+            scoreToGet -= 1;
+            print("Your score: " + score + " Points left: "+scoreToGet);
         }
-        else if (scoreToGet <= 0)
+        if (scoreToGet == 0 && collision.gameObject.tag=="point")
         {
-            print("You win!");
+            print("-----------------------------");
+            print("Win!");
+            print("-----------------------------");
+        }
+        if (collision.gameObject.tag == "ground")
+        {
+            isGrounded = true;
         }
     }
+
+
 
     private void Update()
     {
@@ -56,9 +65,25 @@ public class MovementController : MonoBehaviour
         {
             movement = new Vector3(thrust, 0 , 0);
         }
+        if (Input.GetKeyDown(KeyCode.Space)&&isGrounded==true)
+        {
+            jump = new Vector3(0, jumpStrength, 0);
+            isJumpTrue = true;
+            isGrounded = false;
+        }
+        
     }
-    void FixedUpdate()
+    private void FixedUpdate()
     {
-        playerRb.AddForce(movement);
+        if (!isJumpTrue&&isGrounded==true)
+        {
+            playerRb.AddForce(movement);
+        }
+        if(isJumpTrue&&isGrounded==false) {
+            playerRb.AddForce(jump, ForceMode.Impulse);
+            isJumpTrue=false;
+        }
     }
+
+
 }
