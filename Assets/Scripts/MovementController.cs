@@ -12,7 +12,7 @@ public class MovementController : MonoBehaviour
     public float jumpStrength = 0;
     private int score = 0;
     private int scoreToGet;
-    private bool isJumpTrue, isGrounded=true;
+    private bool isJumpTrue, isGrounded = true;
     Vector3 movement,jump;
 
     // Start is called before the first frame update
@@ -69,19 +69,19 @@ public class MovementController : MonoBehaviour
         {
             jump = new Vector3(0, jumpStrength, 0);
             isJumpTrue = true;
-            isGrounded = false;
         }
         
     }
     private void FixedUpdate()
     {
-        if (!isJumpTrue&&isGrounded==true)
-        {
-            playerRb.AddForce(movement);
-        }
-        if(isJumpTrue&&isGrounded==false) {
+
+        playerRb.AddForce(movement);
+
+        
+        if(isJumpTrue) {
             playerRb.AddForce(jump, ForceMode.Impulse);
-            isJumpTrue=false;
+            isJumpTrue = false;
+            isGrounded = false;
         }
     }
 
