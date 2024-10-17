@@ -5,7 +5,7 @@ using UnityEngine;
 public class Collectible : MonoBehaviour
 {
     // Start is called before the first frame update
-    public float colorChangeSpeed = 0.000005f; 
+    public float colorChangeSpeed = 0.05f; 
     private Gradient gradient;
     private Renderer objectRenderer;
     private Color currentColor= Color.HSVToRGB(0f / 360f, 0.42f, 0.94f);
@@ -17,7 +17,7 @@ public class Collectible : MonoBehaviour
         gradient = new Gradient();
         var colors = new GradientColorKey[2];
         colors[0] = new GradientColorKey(Color.HSVToRGB(0f / 336f, 0.72f, 1.0f), 0.0f);
-        colors[1] = new GradientColorKey(Color.HSVToRGB(210f / 360f, 0.72f, 1.0f), 1.0f);
+        colors[1] = new GradientColorKey(Color.HSVToRGB(36f / 360f, 0.73f, 0.95f), 1.0f);
         
 
         var alphas = new GradientAlphaKey[2];

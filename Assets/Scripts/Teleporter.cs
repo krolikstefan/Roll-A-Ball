@@ -4,15 +4,26 @@ using UnityEngine;
 
 public class Teleporter : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+
+    public GameObject teleport2;
+    public GameObject player;
+
+
+
+    private void OnCollisionEnter(Collision collision)
     {
-        
+
+            StartCoroutine(TeleportAfterDelay());
     }
 
-    // Update is called once per frame
-    void Update()
+    IEnumerator TeleportAfterDelay()
     {
-        
+        print("Getting ready to teleport.Wait");
+        yield return new WaitForSecondsRealtime(2);
+        print("Teleport now");
+
+        player.transform.position = teleport2.transform.position;
     }
+
+
 }

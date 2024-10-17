@@ -42,6 +42,7 @@ public class MovementController : MonoBehaviour
         {
             isGrounded = true;
         }
+
     }
 
 
@@ -65,7 +66,7 @@ public class MovementController : MonoBehaviour
         {
             movement = new Vector3(thrust, 0 , 0);
         }
-        if (Input.GetKeyDown(KeyCode.Space)&&isGrounded==true)
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded == true)
         {
             jump = new Vector3(0, jumpStrength, 0);
             isJumpTrue = true;
