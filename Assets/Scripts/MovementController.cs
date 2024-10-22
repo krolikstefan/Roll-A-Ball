@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class MovementController : MonoBehaviour
 {
@@ -13,38 +15,55 @@ public class MovementController : MonoBehaviour
     private int score = 0;
     private int scoreToGet;
     private bool isJumpTrue, isGrounded = true;
+    private Vector3 startPosition;
+    public Text scoreText;
+    public Text infoText;
     Vector3 movement,jump;
 
     // Start is called before the first frame update
     void Start()
     {
+        startPosition= gameObject.transform.position;
         playerRb = GetComponent<Rigidbody>();
         scoreToGet = GameObject.FindGameObjectsWithTag("point").Length;
         print("Score to get: "+scoreToGet);
     }
 
 
+    private void OnTriggerEnter(Collider other)
+    {
+
+        if (other.gameObject.tag == "point" && scoreToGet > 0)
+        {
+            score += 1;
+            scoreToGet -= 1;
+            scoreText.text = "Score: " + score;
+        }
+        if (scoreToGet == 0 && other.gameObject.tag == "point")
+        {
+            infoText.text = "You Won c: Wait for the next stage!";
+            StartCoroutine(NextStage());
+        }
+
+        if (other.gameObject.layer == 6)
+        {
+            transform.position = startPosition;
+            //infoText.text = "Oops, start again"; 
+        }
+    }
+    IEnumerator NextStage()
+    {
+        yield return new WaitForSecondsRealtime(2);
+        SceneManager.LoadScene(1);
+    }
+
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "point" && scoreToGet>0)
-        {
-            score+=1;
-            scoreToGet -= 1;
-            print("Your score: " + score + " Points left: "+scoreToGet);
-        }
-        if (scoreToGet == 0 && collision.gameObject.tag=="point")
-        {
-            print("-----------------------------");
-            print("Win!");
-            print("-----------------------------");
-        }
         if (collision.gameObject.tag == "ground")
         {
             isGrounded = true;
         }
-
     }
-
 
 
     private void Update()
@@ -85,6 +104,8 @@ public class MovementController : MonoBehaviour
             isGrounded = false;
         }
     }
+
+
 
 
 }

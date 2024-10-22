@@ -5,7 +5,7 @@ using UnityEngine;
 public class Collectible : MonoBehaviour
 {
     // Start is called before the first frame update
-    public float colorChangeSpeed = 0.05f; 
+    //public float colorChangeSpeed = 0.05f; 
     //private Gradient gradient;
     //private Renderer objectRenderer;
     //private Color currentColor= Color.HSVToRGB(0f / 360f, 0.42f, 0.94f);
@@ -38,9 +38,8 @@ public class Collectible : MonoBehaviour
 
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-
         gameObject.SetActive(false);
     }
 }
