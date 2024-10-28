@@ -41,21 +41,38 @@ public class MovementController : MonoBehaviour
         }
         if (scoreToGet == 0 && other.gameObject.tag == "point")
         {
-            infoText.text = "You Won c: Wait for the next stage!";
+            //infoText.text = "You Won c: Wait for the next stage!";
             StartCoroutine(NextStage());
         }
 
         if (other.gameObject.layer == 6)
         {
+            //StartCoroutine(Reload());
             transform.position = startPosition;
-            //infoText.text = "Oops, start again"; 
+            //infoText.text = "Oops, start again";
         }
+        if (other.gameObject.tag == "door")
+        {
+            infoText.text = "Press F to open a door";
+            
+        }
+       
+    }
+    private void OnTriggerExit(Collider other)
+    {
+            infoText.text = " ";
     }
     IEnumerator NextStage()
     {
         yield return new WaitForSecondsRealtime(2);
         SceneManager.LoadScene(1);
     }
+    //IEnumerator Reload()
+    //{
+    //    transform.position = startPosition;
+    //    infoText.text = "Oops, start again";
+    //    yield return new WaitForSecondsRealtime(3);
+    //}
 
     private void OnCollisionEnter(Collision collision)
     {
