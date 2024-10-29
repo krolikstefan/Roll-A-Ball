@@ -5,9 +5,18 @@ using UnityEngine;
 public class Teleporter : MonoBehaviour
 {
 
-    public GameObject teleport2;
-    public GameObject player;
+    //public GameObject teleport2;
+    //public GameObject player;
+    private Transform player;
+    private Transform teleporter2;
+    private AudioSource audioToPlay;
 
+    private void Start()
+    {
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+        teleporter2 = GameObject.FindGameObjectWithTag("teleport2").transform;
+        audioToPlay=GameObject.Find("audioTeleporter").GetComponent<AudioSource>();
+    }
 
 
     private void OnCollisionEnter(Collision collision)
@@ -18,11 +27,12 @@ public class Teleporter : MonoBehaviour
 
     IEnumerator TeleportAfterDelay()
     {
-        print("Getting ready to teleport.Wait");
+        //print("Getting ready to teleport.Wait");
         yield return new WaitForSecondsRealtime(2);
+        audioToPlay.Play();
         print("Teleport now");
 
-        player.transform.position = teleport2.transform.position;
+        player.transform.position = teleporter2.transform.position;
     }
 
 

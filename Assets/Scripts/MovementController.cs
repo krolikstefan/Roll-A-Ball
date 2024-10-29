@@ -5,6 +5,8 @@ using UnityEngine;
 using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
+using UnityEditor.SearchService;
+using System;
 
 public class MovementController : MonoBehaviour
 {
@@ -12,13 +14,17 @@ public class MovementController : MonoBehaviour
     Rigidbody playerRb;
     public float thrust = 6;
     public float jumpStrength = 0;
-    private int score = 0;
-    private int scoreToGet;
+    public int score = 0;
+    private int scoreToGet=0;
     private bool isJumpTrue, isGrounded = true;
     private Vector3 startPosition;
     public Text scoreText;
     public Text infoText;
     Vector3 movement,jump;
+
+
+    //events
+    //public event Action pickUpPoint;
 
     // Start is called before the first frame update
     void Start()
@@ -26,12 +32,14 @@ public class MovementController : MonoBehaviour
         startPosition= gameObject.transform.position;
         playerRb = GetComponent<Rigidbody>();
         scoreToGet = GameObject.FindGameObjectsWithTag("point").Length;
-        print("Score to get: "+scoreToGet);
     }
 
 
     private void OnTriggerEnter(Collider other)
     {
+
+        score += 1;
+        //pickUpPoint();
 
         if (other.gameObject.tag == "point" && scoreToGet > 0)
         {
@@ -41,22 +49,27 @@ public class MovementController : MonoBehaviour
         }
         if (scoreToGet == 0 && other.gameObject.tag == "point")
         {
-            //infoText.text = "You Won c: Wait for the next stage!";
             StartCoroutine(NextStage());
         }
 
         if (other.gameObject.layer == 6)
         {
-            //StartCoroutine(Reload());
             transform.position = startPosition;
-            //infoText.text = "Oops, start again";
         }
         if (other.gameObject.tag == "door")
         {
             infoText.text = "Press F to open a door";
-            
+
         }
-       
+        if (other.gameObject.tag == "teleport1")
+        {
+           infoText.text = "Getting ready to teleport.Wait";
+        }
+        if (other.gameObject.tag == "teleport2")
+        {
+            infoText.text = "aaa";
+        }
+
     }
     private void OnTriggerExit(Collider other)
     {
@@ -66,13 +79,12 @@ public class MovementController : MonoBehaviour
     {
         yield return new WaitForSecondsRealtime(2);
         SceneManager.LoadScene(1);
+
+        if (SceneManager.GetSceneByName("secondStage").isLoaded) {
+            SceneManager.LoadScene(4);
+        }
     }
-    //IEnumerator Reload()
-    //{
-    //    transform.position = startPosition;
-    //    infoText.text = "Oops, start again";
-    //    yield return new WaitForSecondsRealtime(3);
-    //}
+
 
     private void OnCollisionEnter(Collision collision)
     {
@@ -81,9 +93,26 @@ public class MovementController : MonoBehaviour
             isGrounded = true;
         }
     }
+    private void FixedUpdate()
+    {
 
+        playerRb.AddForce(movement);
+
+
+        if (isJumpTrue)
+        {
+            playerRb.AddForce(jump, ForceMode.Impulse);
+            isJumpTrue = false;
+            isGrounded = false;
+        }
+    }
 
     private void Update()
+    {
+        movementInput();
+    }
+
+    private void movementInput()
     {
         movement = new Vector3(0, 0, 0);
         if (Input.GetKey(KeyCode.W))
@@ -100,29 +129,21 @@ public class MovementController : MonoBehaviour
         }
         if (Input.GetKey(KeyCode.D))
         {
-            movement = new Vector3(thrust, 0 , 0);
+            movement = new Vector3(thrust, 0, 0);
         }
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded == true)
         {
             jump = new Vector3(0, jumpStrength, 0);
             isJumpTrue = true;
         }
-        
+
     }
-    private void FixedUpdate()
-    {
-
-        playerRb.AddForce(movement);
-
-        
-        if(isJumpTrue) {
-            playerRb.AddForce(jump, ForceMode.Impulse);
-            isJumpTrue = false;
-            isGrounded = false;
-        }
-    }
-
-
+    //public int getScore()
+    //{
+    //    int getScore = score;
+    //    return getScore;
+    //}
+   
 
 
 }

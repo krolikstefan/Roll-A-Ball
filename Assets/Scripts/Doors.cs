@@ -4,14 +4,16 @@ using UnityEngine;
 
 public class Doors : MonoBehaviour
 {
-    public GameObject door;
-    public float speed = 2f;
+    //public GameObject door;
+    private Transform door;
+    private float speed = 2f;
     private float minY, maxY;
     private bool isOpening = false;
     private bool isClosing = false;
 
     void Start()
     {
+        door = GameObject.FindGameObjectWithTag("door").transform;
         minY = door.transform.position.y;
         maxY = door.transform.position.y + 10f;
     }
