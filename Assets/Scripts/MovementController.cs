@@ -1,149 +1,73 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.SocialPlatforms.Impl;
-using UnityEngine.UI;
-using UnityEngine.SceneManagement;
-using UnityEditor.SearchService;
 using System;
 
 public class MovementController : MonoBehaviour
 {
-
     Rigidbody playerRb;
     public float thrust = 6;
-    public float jumpStrength = 0;
-    public int score = 0;
-    private int scoreToGet=0;
+    public float jumpStrength = 6; 
     private bool isJumpTrue, isGrounded = true;
     private Vector3 startPosition;
-    public Text scoreText;
-    public Text infoText;
-    Vector3 movement,jump;
+    Vector3 movement;
 
+    // Events
+    public event Action pickUpPoint;
 
-    //events
-    //public event Action pickUpPoint;
-
-    // Start is called before the first frame update
     void Start()
     {
-        startPosition= gameObject.transform.position;
+        startPosition = transform.position;
         playerRb = GetComponent<Rigidbody>();
-        scoreToGet = GameObject.FindGameObjectsWithTag("point").Length;
     }
-
 
     private void OnTriggerEnter(Collider other)
     {
-
-        score += 1;
-        //pickUpPoint();
-
-        if (other.gameObject.tag == "point" && scoreToGet > 0)
+        if (other.CompareTag("point"))
         {
-            score += 1;
-            scoreToGet -= 1;
-            scoreText.text = "Score: " + score;
-        }
-        if (scoreToGet == 0 && other.gameObject.tag == "point")
-        {
-            StartCoroutine(NextStage());
+            pickUpPoint?.Invoke();
         }
 
         if (other.gameObject.layer == 6)
         {
             transform.position = startPosition;
         }
-        if (other.gameObject.tag == "door")
-        {
-            infoText.text = "Press F to open a door";
-
-        }
-        if (other.gameObject.tag == "teleport1")
-        {
-           infoText.text = "Getting ready to teleport.Wait";
-        }
-        if (other.gameObject.tag == "teleport2")
-        {
-            infoText.text = "aaa";
-        }
-
     }
-    private void OnTriggerExit(Collider other)
-    {
-            infoText.text = " ";
-    }
-    IEnumerator NextStage()
-    {
-        yield return new WaitForSecondsRealtime(2);
-        SceneManager.LoadScene(1);
-
-        if (SceneManager.GetSceneByName("secondStage").isLoaded) {
-            SceneManager.LoadScene(4);
-        }
-    }
-
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.tag == "ground")
+        if (collision.gameObject.CompareTag("ground"))
         {
-            isGrounded = true;
+            isGrounded = true; 
+            Debug.Log("Landed on ground");
         }
     }
+
     private void FixedUpdate()
     {
-
-        playerRb.AddForce(movement);
-
+        playerRb.AddForce(movement, ForceMode.Force); 
 
         if (isJumpTrue)
         {
-            playerRb.AddForce(jump, ForceMode.Impulse);
-            isJumpTrue = false;
-            isGrounded = false;
+            playerRb.AddForce(Vector3.up * jumpStrength, ForceMode.Impulse);  
+            isJumpTrue = false; 
+            isGrounded = false;  
         }
     }
 
     private void Update()
     {
-        movementInput();
+        movement = Vector3.zero;  
+
+        if (Input.GetKey(KeyCode.W)) movement += Vector3.forward * thrust;
+        if (Input.GetKey(KeyCode.S)) movement += Vector3.back * thrust;
+        if (Input.GetKey(KeyCode.A)) movement += Vector3.left * thrust;
+        if (Input.GetKey(KeyCode.D)) movement += Vector3.right * thrust;
+
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded) 
+        {
+            isJumpTrue = true; 
+            Debug.Log("Jump initiated");
+        }
     }
-
-    private void movementInput()
-    {
-        movement = new Vector3(0, 0, 0);
-        if (Input.GetKey(KeyCode.W))
-        {
-            movement = new Vector3(0, 0, thrust);
-        }
-        if (Input.GetKey(KeyCode.S))
-        {
-            movement = new Vector3(0, 0, -thrust);
-        }
-        if (Input.GetKey(KeyCode.A))
-        {
-            movement = new Vector3(-thrust, 0, 0);
-        }
-        if (Input.GetKey(KeyCode.D))
-        {
-            movement = new Vector3(thrust, 0, 0);
-        }
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded == true)
-        {
-            jump = new Vector3(0, jumpStrength, 0);
-            isJumpTrue = true;
-        }
-
-    }
-    //public int getScore()
-    //{
-    //    int getScore = score;
-    //    return getScore;
-    //}
-   
-
-
 }

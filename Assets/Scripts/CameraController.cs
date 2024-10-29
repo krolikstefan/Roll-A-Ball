@@ -4,10 +4,8 @@ using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
-    //public GameObject player;
     private Transform player;
     private Transform mainCamera;
-    //public Camera stageCamera;
     private Vector3 offset;
     // Start is called before the first frame update
 
