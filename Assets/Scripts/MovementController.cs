@@ -7,10 +7,10 @@ public class MovementController : MonoBehaviour
 {
     Rigidbody playerRb;
     public float thrust = 6;
-    public float jumpStrength = 6; 
-    private bool isJumpTrue, isGrounded = true;
+    public float jumpStrength = 2; 
+    private bool isJumpTrue=false, isGrounded = true;
     private Vector3 startPosition;
-    Vector3 movement;
+    Vector3 movement, jump;
 
     // Events
     public event Action pickUpPoint;
@@ -38,20 +38,19 @@ public class MovementController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("ground"))
         {
-            isGrounded = true; 
-            Debug.Log("Landed on ground");
+            isGrounded = true;
+           // isJumpTrue = false;
         }
     }
 
     private void FixedUpdate()
     {
-        playerRb.AddForce(movement, ForceMode.Force); 
+        playerRb.AddForce(movement, ForceMode.Force);
 
-        if (isJumpTrue)
+        if (isJumpTrue && isGrounded == false)
         {
-            playerRb.AddForce(Vector3.up * jumpStrength, ForceMode.Impulse);  
-            isJumpTrue = false; 
-            isGrounded = false;  
+            playerRb.AddForce(jump, ForceMode.Impulse);
+            isJumpTrue = false;
         }
     }
 
@@ -64,10 +63,11 @@ public class MovementController : MonoBehaviour
         if (Input.GetKey(KeyCode.A)) movement += Vector3.left * thrust;
         if (Input.GetKey(KeyCode.D)) movement += Vector3.right * thrust;
 
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded) 
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded == true)
         {
-            isJumpTrue = true; 
-            Debug.Log("Jump initiated");
+            jump = Vector3.up* jumpStrength;
+            isJumpTrue = true;
+            isGrounded = false;
         }
     }
 }
