@@ -10,6 +10,7 @@ public class TextManager : MonoBehaviour
     private Text scoreTextComp;
     private GameObject infoText;
     private Text infoTextA;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -19,11 +20,14 @@ public class TextManager : MonoBehaviour
         managerScript = gameObject.AddComponent<gameManager>();
 
         scoreText = GameObject.Find("scoreText");
+
         infoText = GameObject.Find("infoText");
         scoreTextComp=scoreText.GetComponent<Text>();
         infoTextA = infoText.GetComponent<Text>();
 
         controller.pickUpPoint += updateScoreText;
+        controller.openDoor += openDoorText;
+        controller.closeDoor += clearDoorText;
 
     }
 
@@ -36,5 +40,13 @@ public class TextManager : MonoBehaviour
     public void winInfoText()
     {
         infoTextA.text = "You win! c:";
+    }
+    private void openDoorText()
+    {
+        infoTextA.text = "Press F to open a door";
+    }
+    private void clearDoorText()
+    {
+        infoTextA.text = ""; 
     }
 }

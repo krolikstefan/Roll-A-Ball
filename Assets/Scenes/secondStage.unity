@@ -662,7 +662,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   thrust: 6
-  jumpStrength: 0
 --- !u!1 &159393549
 GameObject:
   m_ObjectHideFlags: 0
@@ -9647,6 +9646,10 @@ PrefabInstance:
     - target: {fileID: 3023004616364510461, guid: 6a325dec58b850e499eacab855df3d56, type: 3}
       propertyPath: m_TagString
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 3441474259015924719, guid: 6a325dec58b850e499eacab855df3d56, type: 3}
+      propertyPath: thrust
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 6044160547493855767, guid: 6a325dec58b850e499eacab855df3d56, type: 3}
       propertyPath: m_LocalPosition.x

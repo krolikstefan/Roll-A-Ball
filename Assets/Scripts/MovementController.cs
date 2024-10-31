@@ -7,13 +7,15 @@ public class MovementController : MonoBehaviour
 {
     Rigidbody playerRb;
     public float thrust = 6;
-    public float jumpStrength = 2; 
+    //public float jumpStrength = 5; 
     private bool isJumpTrue=false, isGrounded = true;
     private Vector3 startPosition;
     Vector3 movement, jump;
 
     // Events
     public event Action pickUpPoint;
+    public event Action openDoor;
+    public event Action closeDoor;
 
     void Start()
     {
@@ -32,6 +34,18 @@ public class MovementController : MonoBehaviour
         {
             transform.position = startPosition;
         }
+        if (other.CompareTag("door"))
+        {
+            openDoor?.Invoke();
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("door"))
+        {
+            closeDoor?.Invoke();
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -39,7 +53,6 @@ public class MovementController : MonoBehaviour
         if (collision.gameObject.CompareTag("ground"))
         {
             isGrounded = true;
-           // isJumpTrue = false;
         }
     }
 
@@ -49,8 +62,8 @@ public class MovementController : MonoBehaviour
 
         if (isJumpTrue && isGrounded == false)
         {
-            playerRb.AddForce(jump, ForceMode.Impulse);
             isJumpTrue = false;
+            playerRb.AddForce(jump, ForceMode.Impulse);
         }
     }
 
@@ -65,9 +78,10 @@ public class MovementController : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded == true)
         {
-            jump = Vector3.up* jumpStrength;
             isJumpTrue = true;
             isGrounded = false;
+            jump = Vector3.up*3;
+
         }
     }
 }

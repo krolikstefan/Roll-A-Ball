@@ -1,21 +1,25 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Doors : MonoBehaviour
 {
-    //public GameObject door;
     private Transform door;
     private float speed = 2f;
     private float minY, maxY;
     private bool isOpening = false;
     private bool isClosing = false;
 
+
+    //to do: fix; only one works
     void Start()
     {
         door = GameObject.FindGameObjectWithTag("door").transform;
         minY = door.transform.position.y;
         maxY = door.transform.position.y + 10f;
+
     }
 
     void Update()
@@ -29,11 +33,6 @@ public class Doors : MonoBehaviour
         {
             MoveDoor();
         }
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        print("press F to open the door");
     }
 
     IEnumerator CloseDoorsAfterDelay()
