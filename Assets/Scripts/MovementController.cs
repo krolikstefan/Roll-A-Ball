@@ -6,16 +6,19 @@ using System;
 public class MovementController : MonoBehaviour
 {
     Rigidbody playerRb;
-    public float thrust = 6;
-    //public float jumpStrength = 5; 
+    public float thrust = 12;
+    public float jumpStrength = 9; 
     private bool isJumpTrue=false, isGrounded = true;
     private Vector3 startPosition;
     Vector3 movement, jump;
+    
 
     // Events
     public event Action pickUpPoint;
     public event Action openDoor;
     public event Action closeDoor;
+    public event Action shoutThatYouNeedToOpenTheDoor;
+    public event Action iAmOnTheOtherSideDontNeedToOpenTheDoor;
 
     void Start()
     {
@@ -36,6 +39,7 @@ public class MovementController : MonoBehaviour
         }
         if (other.CompareTag("door"))
         {
+            shoutThatYouNeedToOpenTheDoor();
             openDoor?.Invoke();
         }
     }
@@ -44,6 +48,7 @@ public class MovementController : MonoBehaviour
     {
         if (other.CompareTag("door"))
         {
+            iAmOnTheOtherSideDontNeedToOpenTheDoor();
             closeDoor?.Invoke();
         }
     }
@@ -80,7 +85,7 @@ public class MovementController : MonoBehaviour
         {
             isJumpTrue = true;
             isGrounded = false;
-            jump = Vector3.up*3;
+            jump = Vector3.up*jumpStrength;
 
         }
     }

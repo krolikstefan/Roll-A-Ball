@@ -1,15 +1,15 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Teleporter : MonoBehaviour
 {
-
-    //public GameObject teleport2;
-    //public GameObject player;
     private Transform player;
     private Transform teleporter2;
     private AudioSource audioToPlay;
+
+    public event Action onTeleport;
 
     private void Start()
     {
@@ -19,18 +19,16 @@ public class Teleporter : MonoBehaviour
     }
 
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-
-            StartCoroutine(TeleportAfterDelay());
+        onTeleport();
+        StartCoroutine(TeleportAfterDelay());
     }
 
     IEnumerator TeleportAfterDelay()
     {
-        //print("Getting ready to teleport.Wait");
         yield return new WaitForSecondsRealtime(2);
         audioToPlay.Play();
-       // print("Teleport now");
 
         player.transform.position = teleporter2.transform.position;
     }

@@ -11,6 +11,9 @@ public class TextManager : MonoBehaviour
     private GameObject infoText;
     private Text infoTextA;
 
+    private GameObject teleport;
+    private Teleporter teleporter;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -25,9 +28,14 @@ public class TextManager : MonoBehaviour
         scoreTextComp=scoreText.GetComponent<Text>();
         infoTextA = infoText.GetComponent<Text>();
 
+        teleport = GameObject.Find("teleporter1");
+        teleporter = teleport.GetComponent<Teleporter>();
+
         controller.pickUpPoint += updateScoreText;
         controller.openDoor += openDoorText;
         controller.closeDoor += clearDoorText;
+
+        teleporter.onTeleport += standOnTeleport;
 
     }
 
@@ -48,5 +56,9 @@ public class TextManager : MonoBehaviour
     private void clearDoorText()
     {
         infoTextA.text = ""; 
+    }
+    private void standOnTeleport()
+    {
+        infoTextA.text = "Please wait, teleport is loading";
     }
 }
