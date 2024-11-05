@@ -24,7 +24,7 @@ public class gameManager : MonoBehaviour
         textManager=manager.GetComponent<TextManager>();
 
 
-        print(scoreToGet);
+        //print(scoreToGet);
         controller.pickUpPoint += addPoint;
         
     }

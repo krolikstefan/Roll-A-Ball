@@ -1,25 +1,31 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 
 public class Doors : MonoBehaviour
 {
-    private Transform door;
+    private List<Transform> doors = new List<Transform>();
     private float speed = 2f;
-    private float minY, maxY;
+    private Dictionary<Transform, float> minYs = new Dictionary<Transform, float>();
+    private Dictionary<Transform, float> maxYs = new Dictionary<Transform, float>();
     private bool isOpening = false;
     private bool isClosing = false;
 
-
-    //to do: fix; only one works
     void Start()
     {
-        door = GameObject.FindGameObjectWithTag("door").transform;
-        minY = door.transform.position.y;
-        maxY = door.transform.position.y + 10f;
+        GameObject[] doorObjects = GameObject.FindGameObjectsWithTag("door");
 
+        foreach (GameObject doorObject in doorObjects)
+        {
+            Transform doorTransform = doorObject.transform;
+            doors.Add(doorTransform);
+
+            float minY = doorTransform.position.y;
+            float maxY = minY + 10f;
+
+            minYs[doorTransform] = minY;
+            maxYs[doorTransform] = maxY;
+        }
     }
 
     void Update()
@@ -31,43 +37,46 @@ public class Doors : MonoBehaviour
 
         if (isOpening || isClosing)
         {
-            MoveDoor();
+            MoveDoors();
         }
     }
 
     IEnumerator CloseDoorsAfterDelay()
     {
-        yield return new WaitForSecondsRealtime(3);
+        yield return new WaitForSecondsRealtime(2);
         isClosing = true;
     }
 
-    void MoveDoor()
+    void MoveDoors()
     {
- 
-        Vector3 position = door.transform.position;
         float step = speed * Time.deltaTime;
 
-        if (isOpening)
+        foreach (Transform door in doors)
         {
-            position.y += step;
-            if (position.y >= maxY)
-            {
-                position.y = maxY;
-                isOpening = false;
-                StartCoroutine(CloseDoorsAfterDelay());
-            }
-        }
+            Vector3 position = door.position;
 
-        if (isClosing)
-        {
-            position.y -= step;
-            if (position.y <= minY)
+            if (isOpening)
             {
-                position.y = minY;
-                isClosing = false;
+                position.y += step;
+                if (position.y >= maxYs[door])
+                {
+                    position.y = maxYs[door];
+                    isOpening = false;
+                    StartCoroutine(CloseDoorsAfterDelay());
+                }
             }
-        }
 
-        door.transform.position = position;
+            if (isClosing)
+            {
+                position.y -= step;
+                if (position.y <= minYs[door])
+                {
+                    position.y = minYs[door];
+                    isClosing = false;
+                }
+            }
+
+            door.position = position;
+        }
     }
 }

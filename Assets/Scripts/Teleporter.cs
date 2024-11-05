@@ -30,7 +30,7 @@ public class Teleporter : MonoBehaviour
         //print("Getting ready to teleport.Wait");
         yield return new WaitForSecondsRealtime(2);
         audioToPlay.Play();
-        print("Teleport now");
+       // print("Teleport now");
 
         player.transform.position = teleporter2.transform.position;
     }
