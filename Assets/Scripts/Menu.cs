@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public class Menu : MonoBehaviour
 {
+   
     public void StartGame()
     {
         SceneManager.LoadScene(1, LoadSceneMode.Single);
@@ -18,7 +19,4 @@ public class Menu : MonoBehaviour
     {
         Application.Quit();
     }
-
-
-
 }

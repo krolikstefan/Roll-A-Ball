@@ -10,7 +10,7 @@ public class Doors : MonoBehaviour
     private Dictionary<Transform, float> maxYs = new Dictionary<Transform, float>();
     private bool isOpening = false;
     private bool isClosing = false;
-    private bool isCloseToDoor = false;
+    private bool isCloseToADoor = false;
 
     private GameObject player;
     private MovementController controller;
@@ -31,7 +31,7 @@ public class Doors : MonoBehaviour
 
             minYs[doorTransform] = minY;
             maxYs[doorTransform] = maxY;
-        }
+        } 
 
         controller.shoutThatYouNeedToOpenTheDoor += openTheDoorPlease;
         controller.iAmOnTheOtherSideDontNeedToOpenTheDoor += dontOpenTheDoorPlease;
@@ -40,7 +40,7 @@ public class Doors : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyUp(KeyCode.F)&&isCloseToDoor==true)
+        if (Input.GetKeyUp(KeyCode.F)&&isCloseToADoor==true)
         {
             isOpening = true;
         }
@@ -91,11 +91,11 @@ public class Doors : MonoBehaviour
     }
     private void openTheDoorPlease()
     {
-        isCloseToDoor = true;
+        isCloseToADoor = true;
     }
     private void dontOpenTheDoorPlease()
     {
-        isCloseToDoor = false;
+        isCloseToADoor = false;
     }
 
 }
