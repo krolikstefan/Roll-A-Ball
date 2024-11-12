@@ -5,7 +5,7 @@ public class TextManager : MonoBehaviour
 {
     private GameObject player;
     private MovementController controller;
-    private gameManager managerScript;
+    private GameManager managerScript;
     private GameObject scoreText;
     private Text scoreTextComp;
     private GameObject infoText;
@@ -20,7 +20,7 @@ public class TextManager : MonoBehaviour
         player = GameObject.FindGameObjectWithTag("Player");
         controller = player.GetComponent<MovementController>();
 
-        managerScript = gameObject.AddComponent<gameManager>();
+        managerScript = gameObject.AddComponent<GameManager>();
 
         scoreText = GameObject.Find("scoreText");
 
@@ -31,33 +31,33 @@ public class TextManager : MonoBehaviour
         teleport = GameObject.Find("teleporter1");
         teleporter = teleport.GetComponent<Teleporter>();
 
-        controller.pickUpPoint += updateScoreText;
-        controller.openDoor += openDoorText;
-        controller.closeDoor += clearDoorText;
+        controller.pickUpPoint += UpdateScoreText;
+        controller.openDoor += OpenDoorText;
+        controller.closeDoor += ClearDoorText;
 
-        teleporter.onTeleport += standOnTeleport;
+        teleporter.onTeleport += StandOnTeleport;
 
     }
 
-    public void updateScoreText()
+    public void UpdateScoreText()
     {
 
         scoreTextComp.text = "Score: " + managerScript.score;
     }
 
-    public void winInfoText()
+    public void WinInfoText()
     {
         infoTextA.text = "You win! c:";
     }
-    private void openDoorText()
+    private void OpenDoorText()
     {
         infoTextA.text = "Press F to open a door";
     }
-    private void clearDoorText()
+    private void ClearDoorText()
     {
         infoTextA.text = ""; 
     }
-    private void standOnTeleport()
+    private void StandOnTeleport()
     {
         infoTextA.text = "Please wait, teleport is loading";
     }

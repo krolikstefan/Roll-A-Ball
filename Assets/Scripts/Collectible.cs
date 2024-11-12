@@ -5,10 +5,10 @@ using UnityEngine;
 public class Collectible : MonoBehaviour
 {
 
-    AudioSource m_audioSource;
+    AudioSource audioSource;
     void Start()
     {
-        m_audioSource = GameObject.Find("playSoundOnPoint").GetComponent<AudioSource>();
+        audioSource = GameObject.Find("playSoundOnPoint").GetComponent<AudioSource>();
     }
 
     void Update()
@@ -21,7 +21,7 @@ public class Collectible : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         gameObject.SetActive(false);
-        m_audioSource.Play();
+        audioSource.Play();
 
     }
 }

@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class escMenu : MonoBehaviour
+public class EscMenu : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private GameObject escMenuObject;
@@ -11,6 +11,7 @@ public class escMenu : MonoBehaviour
     {
         escMenuObject = GameObject.Find("EscMenu");
         canvas = escMenuObject.GetComponent<Canvas>();
+        canvas.enabled = false;
 
     }
     public void StartGame()
@@ -41,8 +42,15 @@ public class escMenu : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Escape))
         {
-            canvas.enabled = true;
-            Time.timeScale = 0f;
+            if (canvas.enabled)
+            {
+                Resume();
+            }
+            else
+            {
+                canvas.enabled = true;
+                Time.timeScale = 0f;
+            }
         }
     }
 }

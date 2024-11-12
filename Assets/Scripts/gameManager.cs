@@ -1,8 +1,12 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class gameManager : MonoBehaviour
+public class GameManager : MonoBehaviour
 {
+    //singleton
+    public static GameManager instance;
+
+
     public GameObject[] collectibles;
     public int score = 0;
     private int scoreToGet;
@@ -12,6 +16,19 @@ public class gameManager : MonoBehaviour
 
     private TextManager textManager;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    private void Awake()
+    {
+        if(instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+           Destroy(gameObject);
+        }
+    }
+
     void Start()
     {
         player = GameObject.FindGameObjectWithTag("Player");
@@ -25,7 +42,7 @@ public class gameManager : MonoBehaviour
 
 
         //print(scoreToGet);
-        controller.pickUpPoint += addPoint;
+        controller.pickUpPoint += AddPoint;
         
     }
 
@@ -35,21 +52,21 @@ public class gameManager : MonoBehaviour
         
     //}
 
-    private void addPoint()
+    private void AddPoint()
     {
         score += 1;
-        textManager.updateScoreText();
+        textManager.UpdateScoreText();
         print(score);
 
         if (score == scoreToGet && SceneManager.GetActiveScene().buildIndex.Equals(3))
         {
-            textManager.winInfoText();
+            textManager.WinInfoText();
             SceneManager.LoadScene(4);
         }
 
         else if (score == scoreToGet)
         {
-            textManager.winInfoText();
+            textManager.WinInfoText();
             SceneManager.LoadScene(1);
         }
 

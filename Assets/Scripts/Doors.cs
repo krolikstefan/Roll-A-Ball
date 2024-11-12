@@ -33,8 +33,8 @@ public class Doors : MonoBehaviour
             maxYs[doorTransform] = maxY;
         } 
 
-        controller.shoutThatYouNeedToOpenTheDoor += openTheDoorPlease;
-        controller.iAmOnTheOtherSideDontNeedToOpenTheDoor += dontOpenTheDoorPlease;
+        controller.shoutThatYouNeedToOpenTheDoor += OpenTheDoorPlease;
+        controller.iAmOnTheOtherSideDontNeedToOpenTheDoor += DontOpenTheDoorPlease;
 
     }
 
@@ -89,11 +89,11 @@ public class Doors : MonoBehaviour
             door.position = position;
         }
     }
-    private void openTheDoorPlease()
+    private void OpenTheDoorPlease()
     {
         isCloseToADoor = true;
     }
-    private void dontOpenTheDoorPlease()
+    private void DontOpenTheDoorPlease()
     {
         isCloseToADoor = false;
     }
