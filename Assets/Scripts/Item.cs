@@ -7,7 +7,10 @@ public class Item : ScriptableObject
     public string itemName;
     public Categories category;
     public Colors color;
-    //public Transform transform;
-    //[HideInInspector] public GameObject thisGameObject;
+
+
+    public Sprite icon;
+    public GameObject model;
 
 }
+

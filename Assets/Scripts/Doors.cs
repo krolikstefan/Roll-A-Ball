@@ -8,8 +8,7 @@ public class Doors : MonoBehaviour
     private float speed = 2f;
     private Dictionary<Transform, float> minYs = new Dictionary<Transform, float>();
     private Dictionary<Transform, float> maxYs = new Dictionary<Transform, float>();
-    private bool isOpening = false;
-    private bool isClosing = false;
+    private bool isMoving = false; 
     private bool isCloseToADoor = false;
 
     private GameObject player;
@@ -31,71 +30,87 @@ public class Doors : MonoBehaviour
 
             minYs[doorTransform] = minY;
             maxYs[doorTransform] = maxY;
-        } 
+        }
 
         controller.shoutThatYouNeedToOpenTheDoor += OpenTheDoorPlease;
         controller.iAmOnTheOtherSideDontNeedToOpenTheDoor += DontOpenTheDoorPlease;
-
     }
 
     void Update()
     {
-        if (Input.GetKeyUp(KeyCode.F)&&isCloseToADoor==true)
+        if (Input.GetKeyUp(KeyCode.F) && isCloseToADoor && !isMoving)
         {
-            isOpening = true;
-        }
-
-        if (isOpening || isClosing)
-        {
-            MoveDoors();
+            StartCoroutine(OpenAndCloseDoor());
         }
     }
 
-    IEnumerator CloseDoorsAfterDelay()
+    IEnumerator OpenAndCloseDoor()
     {
-        yield return new WaitForSecondsRealtime(2);
-        isClosing = true;
+        isMoving = true;
+
+        yield return MoveDoors(true);
+
+
+        yield return new WaitForSecondsRealtime(1);
+        yield return MoveDoors(false);
+
+        isMoving = false;
     }
 
-    void MoveDoors()
+    IEnumerator MoveDoors(bool opening)
     {
         float step = speed * Time.deltaTime;
 
-        foreach (Transform door in doors)
+        while (true)
         {
-            Vector3 position = door.position;
+            bool allDoorsReachedTarget = true;
 
-            if (isOpening)
+            foreach (Transform door in doors)
             {
-                position.y += step;
-                if (position.y >= maxYs[door])
+                Vector3 position = door.position;
+
+                if (opening)
                 {
-                    position.y = maxYs[door];
-                    isOpening = false;
-                    StartCoroutine(CloseDoorsAfterDelay());
+                    position.y += step;
+                    if (position.y < maxYs[door])
+                    {
+                        allDoorsReachedTarget = false;
+                    }
+                    else
+                    {
+                        position.y = maxYs[door];
+                    }
                 }
+                else
+                {
+                    position.y -= step;
+                    if (position.y > minYs[door])
+                    {
+                        allDoorsReachedTarget = false;
+                    }
+                    else
+                    {
+                        position.y = minYs[door];
+                    }
+                }
+
+                door.position = position;
             }
 
-            if (isClosing)
-            {
-                position.y -= step;
-                if (position.y <= minYs[door])
-                {
-                    position.y = minYs[door];
-                    isClosing = false;
-                }
-            }
+            if (allDoorsReachedTarget)
+                break;
 
-            door.position = position;
+            yield return null;
         }
     }
+
     private void OpenTheDoorPlease()
     {
         isCloseToADoor = true;
     }
+
     private void DontOpenTheDoorPlease()
     {
         isCloseToADoor = false;
     }
-
 }

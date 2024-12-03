@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d65e486e4de6e5448a8fbb43dc8756a0, type: 3}
   m_Name: Grain
   m_EditorClassIdentifier: 
-  active: 1
+  active: 0
   enabled:
     overrideState: 1
     value: 1
@@ -120,10 +120,10 @@ MonoBehaviour:
     value: 3
   toneCurveToeStrength:
     overrideState: 1
-    value: 0.18
+    value: 0.37
   toneCurveToeLength:
     overrideState: 1
-    value: 0.67
+    value: 0.69
   toneCurveShoulderStrength:
     overrideState: 0
     value: 0
@@ -135,7 +135,7 @@ MonoBehaviour:
     value: 0
   toneCurveGamma:
     overrideState: 1
-    value: 0.84
+    value: 1.09
   ldrLut:
     overrideState: 0
     value: {fileID: 0}
@@ -1426,8 +1426,8 @@ MonoBehaviour:
     overrideState: 1
     value: 0.95
   color:
-    overrideState: 0
-    value: {r: 0, g: 0, b: 0, a: 1}
+    overrideState: 1
+    value: {r: 0.07007613, g: 0.035307936, b: 0.21509439, a: 1}
   ambientOnly:
     overrideState: 0
     value: 1
@@ -1442,7 +1442,7 @@ MonoBehaviour:
     value: -12
   thicknessModifier:
     overrideState: 0
-    value: 1
+    value: 1.82
   zBias:
     overrideState: 0
     value: 0.0001

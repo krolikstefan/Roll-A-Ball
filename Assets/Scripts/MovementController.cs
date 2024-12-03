@@ -57,10 +57,10 @@ public class MovementController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("ground"))
         {
-            gameObject.transform.GetChild(0).gameObject.SetActive(true);
+            //gameObject.transform.GetChild(0).gameObject.SetActive(true);
             isGrounded = true;
         }
-        //if (collision.gameObject.CompareTag("ground") && gameObject.transform.)
+        //if (collision.gameObject.CompareTag("ground") &)
         //{
         //    gameObject.transform.GetChild(0).gameObject.GetComponent<ParticleSystem>().Play();
         //}
@@ -91,7 +91,9 @@ public class MovementController : MonoBehaviour
         {
             isJumpTrue = true;
             isGrounded = false;
+            gameObject.transform.GetChild(0).gameObject.GetComponent<ParticleSystem>().Play();
             jump = Vector3.up*jumpStrength;
+
 
         }
     }

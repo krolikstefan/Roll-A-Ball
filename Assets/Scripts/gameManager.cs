@@ -1,14 +1,28 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    //singleton
-    public static GameManager instance;
+    public static GameManager gameManager;
+    private void Awake()
+    {
 
+        if (gameManager == null)
+        {
+            gameManager = this;
+        }
+
+        else
+        {
+            Destroy(gameObject);
+        }
+
+        DontDestroyOnLoad(this.gameObject);
+    }
 
     public GameObject[] collectibles;
-    public int score = 0;
+    [HideInInspector] public int score = 0;
     private int scoreToGet;
     private GameObject player;
     private GameObject manager;
@@ -16,18 +30,6 @@ public class GameManager : MonoBehaviour
 
     private TextManager textManager;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
-
-    private void Awake()
-    {
-        if(instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-           Destroy(gameObject);
-        }
-    }
 
     void Start()
     {
@@ -37,39 +39,36 @@ public class GameManager : MonoBehaviour
         collectibles = GameObject.FindGameObjectsWithTag("point");
         scoreToGet = collectibles.Length;
 
-        manager = GameObject.Find("GameManager");
+        manager = GameObject.Find("TextManager");
         textManager=manager.GetComponent<TextManager>();
 
 
-        //print(scoreToGet);
         controller.pickUpPoint += AddPoint;
         
     }
 
-    // Update is called once per frame
-    //void Update()
-    //{
-        
-    //}
 
     private void AddPoint()
     {
         score += 1;
         textManager.UpdateScoreText();
-        print(score);
+        StartCoroutine(WaitForLoad());
 
+    }
+    IEnumerator WaitForLoad()
+    {
         if (score == scoreToGet && SceneManager.GetActiveScene().buildIndex.Equals(3))
         {
             textManager.WinInfoText();
+            yield return new WaitForSecondsRealtime(3);
             SceneManager.LoadScene(4);
         }
-
         else if (score == scoreToGet)
         {
             textManager.WinInfoText();
+            yield return new WaitForSecondsRealtime(3);
             SceneManager.LoadScene(1);
         }
-
     }
 
 }

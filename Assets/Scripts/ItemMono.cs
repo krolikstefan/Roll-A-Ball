@@ -10,19 +10,18 @@ public class ItemMono : MonoBehaviour
     public Categories category;
     public Colors color;
     public string itemName;
-    public Vector3 itemTransform;
+    public Sprite sprite;
     void Awake()
     {
-        setData();
+        SetData();
     }
-    void setData()
+    void SetData()
     {
-        //itemData.thisGameObject = gameObject;
         itemName = itemData.name;
         id = itemData.id;
         color = itemData.color;
         category = itemData.category;
-        itemTransform = gameObject.transform.localScale;
+        sprite = itemData.icon;
     }
 
 
