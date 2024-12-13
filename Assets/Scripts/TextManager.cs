@@ -14,8 +14,6 @@ public class TextManager : MonoBehaviour
     private Text scoreTextComp;
     private Text infoTextA;
 
-    //scriptable objects
-    private Inventory inventory;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -31,7 +29,7 @@ public class TextManager : MonoBehaviour
         scoreTextComp=scoreText.GetComponent<Text>();
         infoTextA = infoText.GetComponent<Text>();
 
-        teleport = GameObject.Find("teleporter1");
+        teleport = GameObject.Find("Teleporter1");
         teleporter = teleport.GetComponent<Teleporter>();
 
         controller.pickUpPoint += UpdateScoreText;
@@ -40,7 +38,7 @@ public class TextManager : MonoBehaviour
 
         teleporter.onTeleport += StandOnTeleport;
 
-        //inventory.noSpaceInInventory += NoSpaceInInventoryText;
+
 
     }
 
@@ -66,8 +64,5 @@ public class TextManager : MonoBehaviour
     {
         infoTextA.text = "Please wait, teleport is loading";
     }
-    //private void NoSpaceInInventoryText()
-    //{
-    //    infoTextA.text = "You have no more space in your inventory";
-    //}
+
 }

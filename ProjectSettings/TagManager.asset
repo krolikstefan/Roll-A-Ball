@@ -11,6 +11,7 @@ TagManager:
   - door
   - scoreText
   - sparkle
+  - Item
   layers:
   - Default
   - TransparentFX
