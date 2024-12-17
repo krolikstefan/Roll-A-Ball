@@ -7,16 +7,15 @@ public class HoldInventory : MonoBehaviour
 
     public int whatItemSelected;
     public bool isItemSelected=false;
+    private bool isAdded;
     public void OnTriggerEnter(Collider other)
     {
         var item = other.GetComponent<Item>();
         if (item)
         {
             inventory.AddItem(item.item,1);
-            if (inventory.container.Count <= inventory.maxInventoryCapacity)
-            {
-                Destroy(other.gameObject);
-            }
+            Destroy(other.gameObject);
+            
         }
 
     }
