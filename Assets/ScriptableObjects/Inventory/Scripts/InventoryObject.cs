@@ -9,7 +9,7 @@ public class InventoryObject : ScriptableObject
     public List<InventorySlot> container = new List<InventorySlot>();
     public int maxInventoryCapacity = 6;
     private bool hasItem;
-    public void AddItem(ItemObject itemToAdd, int howManyToAdd)
+    public bool AddItem(ItemObject itemToAdd, int howManyToAdd)
     {
         hasItem = false;
         for (int i = 0; i < container.Count; i++)
@@ -18,17 +18,19 @@ public class InventoryObject : ScriptableObject
             {
                 container[i].AddAmount(howManyToAdd);
                 hasItem = true;
-                return;
+                return true;
             }
         }
 
        if (!hasItem&&container.Count < maxInventoryCapacity)
         {
-            container.Add(new InventorySlot(itemToAdd, howManyToAdd)); 
+            container.Add(new InventorySlot(itemToAdd, howManyToAdd));
+            return true;
         }
         else
         {
             Debug.LogWarning("Cannot add new item. Inventory is full.");
+            return false;
         }
     }
 }
