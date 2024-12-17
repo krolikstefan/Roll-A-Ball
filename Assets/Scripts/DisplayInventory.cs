@@ -29,8 +29,6 @@ public class DisplayInventory : MonoBehaviour
             obj.GetComponentInChildren<TextMeshProUGUI>().text = inventory.container[i].amount.ToString("n0");
         }
     }
-
-
     public Vector3 getPosition(int i)
     {
         return new Vector3(

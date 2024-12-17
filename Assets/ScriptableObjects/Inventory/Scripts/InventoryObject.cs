@@ -1,34 +1,38 @@
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "InventoryObject", menuName = "InventorySystem/InventoryObject")]
 public class InventoryObject : ScriptableObject
 {
-
     public List<InventorySlot> container = new List<InventorySlot>();
-    public int inventorySpace = 5;
-
+    public int maxInventoryCapacity = 6;
+    private bool hasItem;
     public void AddItem(ItemObject itemToAdd, int howManyToAdd)
     {
-        bool hasItem = false;
-        for (int i = 0; i<container.Count; i++)
+        hasItem = false;
+        for (int i = 0; i < container.Count; i++)
         {
             if (container[i].item == itemToAdd)
             {
                 container[i].AddAmount(howManyToAdd);
                 hasItem = true;
-                break;
+                return;
             }
         }
-        if (!hasItem&&container.Count<inventorySpace)
+
+       if (!hasItem&&container.Count < maxInventoryCapacity)
         {
-            container.Add(new InventorySlot(itemToAdd, howManyToAdd));
-            //inventorySpace--;
+            container.Add(new InventorySlot(itemToAdd, howManyToAdd)); 
+        }
+        else
+        {
+            Debug.LogWarning("Cannot add new item. Inventory is full.");
         }
     }
-    
 }
+
 [System.Serializable]
 public class InventorySlot
 {
@@ -40,10 +44,9 @@ public class InventorySlot
         item = itemInSlot;
         amount = howMany;
     }
+
     public void AddAmount(int value)
     {
         amount += value;
     }
-
-
 }
