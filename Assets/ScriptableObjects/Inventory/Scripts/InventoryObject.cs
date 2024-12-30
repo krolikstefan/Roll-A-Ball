@@ -9,6 +9,9 @@ public class InventoryObject : ScriptableObject
     public List<InventorySlot> container = new List<InventorySlot>();
     public int maxInventoryCapacity = 6;
     private bool hasItem;
+
+    public InventorySlot selectedSlot;
+    public event Action<InventorySlot> OnItemSelected;
     public bool AddItem(ItemObject itemToAdd, int howManyToAdd)
     {
         hasItem = false;
@@ -33,6 +36,24 @@ public class InventoryObject : ScriptableObject
             return false;
         }
     }
+    public bool SelectItem(int slotIndex)
+    {
+        if (slotIndex < 0 || slotIndex >= container.Count)
+        {
+            Debug.LogWarning($"Cannot select item. Invalid slot index: {slotIndex}");
+            selectedSlot = null;
+            return false;
+        }
+
+        selectedSlot = container[slotIndex];
+        OnItemSelected?.Invoke(selectedSlot);
+        return true;
+    }
+    public InventorySlot GetSelectedItem()
+    {
+        return selectedSlot;
+    }
+
 }
 
 [System.Serializable]
@@ -51,4 +72,6 @@ public class InventorySlot
     {
         amount += value;
     }
+
+
 }

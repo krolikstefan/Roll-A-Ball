@@ -57,13 +57,8 @@ public class MovementController : MonoBehaviour
     {
         if (collision.gameObject.CompareTag("ground"))
         {
-            //gameObject.transform.GetChild(0).gameObject.SetActive(true);
             isGrounded = true;
         }
-        //if (collision.gameObject.CompareTag("ground") &)
-        //{
-        //    gameObject.transform.GetChild(0).gameObject.GetComponent<ParticleSystem>().Play();
-        //}
 
     }
 

@@ -14,6 +14,7 @@ public class TextManager : MonoBehaviour
     private Text scoreTextComp;
     private Text infoTextA;
 
+    private HoldInventory inventory;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -26,18 +27,36 @@ public class TextManager : MonoBehaviour
         scoreText = GameObject.Find("scoreText");
 
         infoText = GameObject.Find("infoText");
-        scoreTextComp=scoreText.GetComponent<Text>();
+        if (scoreText != null)
+        {
+            if (scoreTextComp!=null)
+            {
+                scoreTextComp = scoreText.GetComponent<Text>();
+            }
+        }
         infoTextA = infoText.GetComponent<Text>();
 
+        
         teleport = GameObject.Find("Teleporter1");
-        teleporter = teleport.GetComponent<Teleporter>();
+        if (teleport != null)
+        {
+            teleporter = teleport.GetComponent<Teleporter>();
+        }
+
+        inventory=player.GetComponent<HoldInventory>();
 
         controller.pickUpPoint += UpdateScoreText;
         controller.openDoor += OpenDoorText;
-        controller.closeDoor += ClearDoorText;
+        controller.closeDoor += ClearInfoText;
 
-        teleporter.onTeleport += StandOnTeleport;
+        if (teleport != null)
+        {
+            teleporter.onTeleport += StandOnTeleport;
+        }
 
+        inventory.iWantToPickUpOrAmINot += PickUpText;
+        inventory.notAnymore += ClearInfoText;
+        inventory.itemSelectedNumber += SelectedItemText;
 
 
     }
@@ -56,7 +75,15 @@ public class TextManager : MonoBehaviour
     {
         infoTextA.text = "Press F to open a door";
     }
-    private void ClearDoorText()
+    private void PickUpText()
+    {
+        infoTextA.text = "Press F to pick up this item";
+    }
+    private void SelectedItemText()
+    {
+        infoTextA.text = "You selected item from slot number: "+(inventory.whatItemSelected+1);
+    }
+    private void ClearInfoText()
     {
         infoTextA.text = ""; 
     }

@@ -12,6 +12,7 @@ TagManager:
   - scoreText
   - sparkle
   - Item
+  - NPC
   layers:
   - Default
   - TransparentFX
