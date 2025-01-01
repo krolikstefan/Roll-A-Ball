@@ -11,6 +11,7 @@ public class MovementController : MonoBehaviour
     private bool isJumpTrue=false, isGrounded = true;
     private Vector3 startPosition;
     Vector3 movement, jump;
+    //private float rotateSpeed = 5;
     
 
     // Events
@@ -75,21 +76,34 @@ public class MovementController : MonoBehaviour
 
     private void Update()
     {
-        movement = Vector3.zero;  
+        movement = Vector3.zero;
 
-        if (Input.GetKey(KeyCode.W)) movement += Vector3.forward * thrust;
-        if (Input.GetKey(KeyCode.S)) movement += Vector3.back * thrust;
-        if (Input.GetKey(KeyCode.A)) movement += Vector3.left * thrust;
-        if (Input.GetKey(KeyCode.D)) movement += Vector3.right * thrust;
+        Vector3 cameraForward = Camera.main.transform.forward;
+        Vector3 cameraRight = Camera.main.transform.right;
 
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded == true)
+        cameraForward.y = 0;
+        cameraRight.y = 0;
+
+        cameraForward.Normalize();
+        cameraRight.Normalize();
+
+        if (Input.GetKey(KeyCode.W)) movement += cameraForward * thrust;
+        if (Input.GetKey(KeyCode.S)) movement += -cameraForward * thrust;
+        if (Input.GetKey(KeyCode.A)) movement += -cameraRight * thrust;
+        if (Input.GetKey(KeyCode.D)) movement += cameraRight * thrust;
+
+        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
             isJumpTrue = true;
             isGrounded = false;
             gameObject.transform.GetChild(0).gameObject.GetComponent<ParticleSystem>().Play();
-            jump = Vector3.up*jumpStrength;
+            playerRb.AddForce(Vector3.up * jumpStrength, ForceMode.Impulse);
+        }
 
-
+        if (movement != Vector3.zero)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(movement);
+            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10);
         }
     }
 }

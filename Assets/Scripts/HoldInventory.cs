@@ -29,6 +29,7 @@ public class HoldInventory : MonoBehaviour
                 if (isAdded)
                 {
                     Destroy(other.gameObject);
+                    notAnymore?.Invoke();
                 }
             }
             iWantToPickUpThisItem = false;

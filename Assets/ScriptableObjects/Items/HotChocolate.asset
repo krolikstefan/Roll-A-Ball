@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 505634430451664136, guid: a1dfe9d2ccb6b6c41aaa3268dd1de6e5, type: 3}
   type: 2
-  itemName: 
-  description: 
+  itemName: hotChocolate
+  description: Cup of really hot chocolate
