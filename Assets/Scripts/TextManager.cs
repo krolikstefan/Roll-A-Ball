@@ -56,7 +56,6 @@ public class TextManager : MonoBehaviour
 
         inventory.iWantToPickUpOrAmINot += PickUpText;
         inventory.notAnymore += ClearInfoText;
-        inventory.itemSelectedNumber += SelectedItemText;
 
 
     }
@@ -78,10 +77,6 @@ public class TextManager : MonoBehaviour
     private void PickUpText()
     {
         infoTextA.text = "Press F to pick up this item";
-    }
-    private void SelectedItemText()
-    {
-        infoTextA.text = "You selected item from slot number: "+(inventory.whatItemSelected+1);
     }
     private void ClearInfoText()
     {

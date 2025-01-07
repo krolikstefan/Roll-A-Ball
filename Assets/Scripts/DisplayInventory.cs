@@ -11,16 +11,24 @@ public class DisplayInventory : MonoBehaviour
     public int numberOfColumns;
     Dictionary<InventorySlot, GameObject> itemDisplayed = new Dictionary<InventorySlot, GameObject>();
 
+    public GameObject selectionFrame;
+    private GameObject currentSelectionFrame;
+    private GameObject fallbackSelectionFrame;
+
     private void Start()
     {
         CreateDisplay();
+        if (selectionFrame == null && fallbackSelectionFrame != null)
+        {
+            Debug.Log("Reassigning selection frame from fallback.");
+            selectionFrame = fallbackSelectionFrame;
+        }
     }
-
     private void Update()
     {
         UpdateDisplay();
     }
-    public void CreateDisplay()
+    private void CreateDisplay()
     {
         for (int i = 0; i < inventory.container.Count; i++)
         {
@@ -29,7 +37,7 @@ public class DisplayInventory : MonoBehaviour
             obj.GetComponentInChildren<TextMeshProUGUI>().text = inventory.container[i].amount.ToString("n0");
         }
     }
-    public Vector3 getPosition(int i)
+    private Vector3 getPosition(int i)
     {
         return new Vector3(
                 xStart + (xSpaceBetweenItems * (i % numberOfColumns)),
@@ -37,7 +45,7 @@ public class DisplayInventory : MonoBehaviour
                 0f
             );
     }
-    public void UpdateDisplay()
+    private void UpdateDisplay()
     {
         for (int i = 0; i < inventory.container.Count; i++)
         {
@@ -54,4 +62,54 @@ public class DisplayInventory : MonoBehaviour
             }
         }
     }
+
+    private void OnItemSelected(InventorySlot slot)
+    {
+        AddSelectionFrame();
+    }
+
+    private void AddSelectionFrame()
+    {
+
+        if (selectionFrame == null)
+        {
+            return;
+        }
+
+        var selectedItem = inventory.GetSelectedItem();
+        if (selectedItem == null)
+        {
+            return;
+        }
+
+        if (currentSelectionFrame != null)
+        {
+            Destroy(currentSelectionFrame);
+        }
+
+        int selectedIndex = inventory.container.IndexOf(selectedItem);
+
+        if (selectedIndex != -1)
+        {
+            currentSelectionFrame = Instantiate(selectionFrame, Vector3.zero, Quaternion.identity, transform);
+            currentSelectionFrame.GetComponent<RectTransform>().localPosition = getPosition(selectedIndex);
+            currentSelectionFrame.SetActive(true);
+        }
+        else
+        {
+            Debug.LogWarning("Selected item index not found in container.");
+        }
+    }
+
+    private void OnEnable()
+    {
+        inventory.OnItemSelected += OnItemSelected;
+    }
+
+    private void OnDisable()
+    {
+        inventory.OnItemSelected -= OnItemSelected;
+    }
+
+
 }

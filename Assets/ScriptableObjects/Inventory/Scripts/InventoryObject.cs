@@ -12,6 +12,8 @@ public class InventoryObject : ScriptableObject
 
     public InventorySlot selectedSlot;
     public event Action<InventorySlot> OnItemSelected;
+
+
     public bool AddItem(ItemObject itemToAdd, int howManyToAdd)
     {
         hasItem = false;
@@ -38,17 +40,21 @@ public class InventoryObject : ScriptableObject
     }
     public bool SelectItem(int slotIndex)
     {
-        if (slotIndex < 0 || slotIndex >= container.Count)
+        if (container == null || container.Count == 0)
         {
-            Debug.LogWarning($"Cannot select item. Invalid slot index: {slotIndex}");
-            selectedSlot = null;
             return false;
         }
 
+        if (slotIndex < 0 || slotIndex >= container.Count)
+        {
+            selectedSlot = null;
+            return false;
+        }
         selectedSlot = container[slotIndex];
         OnItemSelected?.Invoke(selectedSlot);
         return true;
     }
+
     public InventorySlot GetSelectedItem()
     {
         return selectedSlot;

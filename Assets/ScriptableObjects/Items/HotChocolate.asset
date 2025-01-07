@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 915e7785123141f46ae7cb20375afdaa, type: 3}
   m_Name: HotChocolate
   m_EditorClassIdentifier: 
-  prefab: {fileID: 505634430451664136, guid: a1dfe9d2ccb6b6c41aaa3268dd1de6e5, type: 3}
+  prefab: {fileID: 505634430451664136, guid: 62becfa4bcc263849bfdcb3d4f1656f1, type: 3}
   type: 2
   itemName: hotChocolate
   description: Cup of really hot chocolate

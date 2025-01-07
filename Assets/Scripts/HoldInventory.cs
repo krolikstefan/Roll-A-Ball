@@ -14,7 +14,6 @@ public class HoldInventory : MonoBehaviour
 
     public event Action iWantToPickUpOrAmINot;
     public event Action notAnymore;
-    public event Action itemSelectedNumber;
 
     public void OnTriggerStay(Collider other)
     {
@@ -93,9 +92,7 @@ public class HoldInventory : MonoBehaviour
             InventorySlot selectedSlot = inventory.GetSelectedItem();
             if (selectedSlot != null)
             {
-                Debug.Log($"Selected Item: {selectedSlot.item.name}, Amount: {selectedSlot.amount}");
                 isItemSelected = true;
-                itemSelectedNumber();
             }
         }
         else
