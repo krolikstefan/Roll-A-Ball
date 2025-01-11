@@ -25,6 +25,7 @@ public class MovementController : MonoBehaviour
     {
         startPosition = transform.position;
         playerRb = GetComponent<Rigidbody>();
+
     }
 
     private void OnTriggerEnter(Collider other)
@@ -105,5 +106,6 @@ public class MovementController : MonoBehaviour
             Quaternion targetRotation = Quaternion.LookRotation(movement);
             transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10);
         }
+
     }
 }

@@ -10,7 +10,8 @@ public class HoldInventory : MonoBehaviour
     public int whatItemSelected;
     public bool isItemSelected=false;
     private bool isAdded=false;
-    private bool iWantToPickUpThisItem = false;
+    public static bool iWantToPickUpThisItem = false;
+    private bool isPlayerInTrigger=false;
 
     public event Action iWantToPickUpOrAmINot;
     public event Action notAnymore;
@@ -20,6 +21,7 @@ public class HoldInventory : MonoBehaviour
         var item = other.GetComponent<Item>();
         if (item)
         {
+            isPlayerInTrigger = true;
             iWantToPickUpOrAmINot?.Invoke();
             if (iWantToPickUpThisItem)
             {
@@ -41,6 +43,7 @@ public class HoldInventory : MonoBehaviour
         {
             notAnymore?.Invoke();
         }
+        isPlayerInTrigger = false;
     }
 
     private void OnApplicationQuit()
@@ -80,9 +83,9 @@ public class HoldInventory : MonoBehaviour
             whatItemSelected = 5;
             SelectInventoryItem();
         }
-        if (Input.GetKeyDown(KeyCode.F))
+        if (Input.GetKeyDown(KeyCode.F)&&isPlayerInTrigger==true)
         {
-            iWantToPickUpThisItem = true;
+            HoldInventory.iWantToPickUpThisItem = true;
         }
     }
     private void SelectInventoryItem()
