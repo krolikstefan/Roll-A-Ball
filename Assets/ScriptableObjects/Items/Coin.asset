@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Coin
   m_EditorClassIdentifier: 
   prefab: {fileID: 505634430451664136, guid: ec5fe73a015c07a4eb2dfe9e7e443a06, type: 3}
+  inGamePrefab: {fileID: 5351400801148707361, guid: b14640908502e1e48a1d76758ec3c219, type: 3}
   type: 0
   itemName: 
   description: Shiny

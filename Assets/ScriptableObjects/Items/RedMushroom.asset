@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: RedMushroom
   m_EditorClassIdentifier: 
   prefab: {fileID: 505634430451664136, guid: ae5faa941d3591b4b8bca120debe30e8, type: 3}
+  inGamePrefab: {fileID: 9057072551370161100, guid: 19c320e553cc5f541847ef46691e414d, type: 3}
   type: 2
   itemName: 
   description: 

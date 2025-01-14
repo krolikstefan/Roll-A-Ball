@@ -10,7 +10,6 @@ public class DisplayInventory : MonoBehaviour
     public int ySpaceBetweenItems;
     public int numberOfColumns;
     Dictionary<InventorySlot, GameObject> itemDisplayed = new Dictionary<InventorySlot, GameObject>();
-
     public GameObject selectionFrame;
     private GameObject currentSelectionFrame;
     private GameObject fallbackSelectionFrame;
@@ -24,10 +23,12 @@ public class DisplayInventory : MonoBehaviour
             selectionFrame = fallbackSelectionFrame;
         }
     }
+
     private void Update()
     {
         UpdateDisplay();
     }
+
     private void CreateDisplay()
     {
         for (int i = 0; i < inventory.container.Count; i++)
@@ -35,8 +36,10 @@ public class DisplayInventory : MonoBehaviour
             var obj = Instantiate(inventory.container[i].item.prefab, Vector3.zero, Quaternion.identity, transform);
             obj.GetComponent<RectTransform>().localPosition = getPosition(i);
             obj.GetComponentInChildren<TextMeshProUGUI>().text = inventory.container[i].amount.ToString("n0");
+            itemDisplayed.Add(inventory.container[i], obj);
         }
     }
+
     private Vector3 getPosition(int i)
     {
         return new Vector3(
@@ -45,13 +48,31 @@ public class DisplayInventory : MonoBehaviour
                 0f
             );
     }
+
     private void UpdateDisplay()
     {
+        List<InventorySlot> slotsToRemove = new List<InventorySlot>();
+        foreach (KeyValuePair<InventorySlot, GameObject> kvp in itemDisplayed)
+        {
+            if (!inventory.container.Contains(kvp.Key))
+            {
+                Destroy(kvp.Value);
+                slotsToRemove.Add(kvp.Key);
+            }
+        }
+
+        foreach (InventorySlot slot in slotsToRemove)
+        {
+            itemDisplayed.Remove(slot);
+        }
+
         for (int i = 0; i < inventory.container.Count; i++)
         {
             if (itemDisplayed.ContainsKey(inventory.container[i]))
             {
-                itemDisplayed[inventory.container[i]].GetComponentInChildren<TextMeshProUGUI>().text = inventory.container[i].amount.ToString("n0");
+                itemDisplayed[inventory.container[i]].GetComponent<RectTransform>().localPosition = getPosition(i);
+                itemDisplayed[inventory.container[i]].GetComponentInChildren<TextMeshProUGUI>().text =
+                    inventory.container[i].amount.ToString("n0");
             }
             else
             {
@@ -59,6 +80,34 @@ public class DisplayInventory : MonoBehaviour
                 obj.GetComponent<RectTransform>().localPosition = getPosition(i);
                 obj.GetComponentInChildren<TextMeshProUGUI>().text = inventory.container[i].amount.ToString("n0");
                 itemDisplayed.Add(inventory.container[i], obj);
+            }
+        }
+
+        UpdateSelectionFrame();
+    }
+
+    private void UpdateSelectionFrame()
+    {
+        if (currentSelectionFrame != null)
+        {
+            var selectedItem = inventory.GetSelectedItem();
+            if (selectedItem != null)
+            {
+                int selectedIndex = inventory.container.IndexOf(selectedItem);
+                if (selectedIndex != -1)
+                {
+                    currentSelectionFrame.GetComponent<RectTransform>().localPosition = getPosition(selectedIndex);
+                }
+                else
+                {
+                    Destroy(currentSelectionFrame);
+                    currentSelectionFrame = null;
+                }
+            }
+            else
+            {
+                Destroy(currentSelectionFrame);
+                currentSelectionFrame = null;
             }
         }
     }
@@ -70,7 +119,6 @@ public class DisplayInventory : MonoBehaviour
 
     private void AddSelectionFrame()
     {
-
         if (selectionFrame == null)
         {
             return;
@@ -79,6 +127,11 @@ public class DisplayInventory : MonoBehaviour
         var selectedItem = inventory.GetSelectedItem();
         if (selectedItem == null)
         {
+            if (currentSelectionFrame != null)
+            {
+                Destroy(currentSelectionFrame);
+                currentSelectionFrame = null;
+            }
             return;
         }
 
@@ -88,7 +141,6 @@ public class DisplayInventory : MonoBehaviour
         }
 
         int selectedIndex = inventory.container.IndexOf(selectedItem);
-
         if (selectedIndex != -1)
         {
             currentSelectionFrame = Instantiate(selectionFrame, Vector3.zero, Quaternion.identity, transform);
@@ -110,6 +162,4 @@ public class DisplayInventory : MonoBehaviour
     {
         inventory.OnItemSelected -= OnItemSelected;
     }
-
-
 }

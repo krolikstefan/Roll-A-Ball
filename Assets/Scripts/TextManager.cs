@@ -57,6 +57,8 @@ public class TextManager : MonoBehaviour
         inventory.iWantToPickUpOrAmINot += PickUpText;
         inventory.notAnymore += ClearInfoText;
 
+        inventory.giveItem += GiveText;
+
 
     }
 
@@ -77,6 +79,10 @@ public class TextManager : MonoBehaviour
     private void PickUpText()
     {
         infoTextA.text = "Press F to pick up this item";
+    }
+    private void GiveText()
+    {
+        infoTextA.text = "Press G to give gift to this character";
     }
     private void ClearInfoText()
     {

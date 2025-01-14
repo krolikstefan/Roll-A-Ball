@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: HotChocolate
   m_EditorClassIdentifier: 
   prefab: {fileID: 505634430451664136, guid: 62becfa4bcc263849bfdcb3d4f1656f1, type: 3}
+  inGamePrefab: {fileID: 6928291128564918748, guid: f3292b4b1d109d4428cbda8d925d0b13, type: 3}
   type: 2
   itemName: hotChocolate
   description: Cup of really hot chocolate

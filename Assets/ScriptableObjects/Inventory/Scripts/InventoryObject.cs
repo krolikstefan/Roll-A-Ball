@@ -2,12 +2,13 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 [CreateAssetMenu(fileName = "InventoryObject", menuName = "InventorySystem/InventoryObject")]
 public class InventoryObject : ScriptableObject
 {
     public List<InventorySlot> container = new List<InventorySlot>();
-    public int maxInventoryCapacity = 6;
+    public int maxInventoryCapacity = 10;
     private bool hasItem;
 
     public InventorySlot selectedSlot;
@@ -27,7 +28,7 @@ public class InventoryObject : ScriptableObject
             }
         }
 
-       if (!hasItem&&container.Count < maxInventoryCapacity)
+        if (!hasItem && container.Count < maxInventoryCapacity)
         {
             container.Add(new InventorySlot(itemToAdd, howManyToAdd));
             return true;
@@ -37,6 +38,33 @@ public class InventoryObject : ScriptableObject
             Debug.LogWarning("Cannot add new item. Inventory is full.");
             return false;
         }
+    }
+
+    public bool DropItem(ItemObject itemToDrop, int howManyToDrop)
+    {
+        if (itemToDrop == null || howManyToDrop <= 0)
+            return false;
+
+        for (int i = 0; i < container.Count; i++)
+        {
+            if (container[i].item == itemToDrop)
+            {
+                if (container[i].amount < howManyToDrop)
+                    return false;
+
+                container[i].amount -= howManyToDrop;
+                if (container[i].amount == 0)
+                {
+                    if (selectedSlot == container[i])
+                        selectedSlot = null;
+
+                    container.RemoveAt(i);
+                }
+
+                return true;
+            }
+        }
+        return false;
     }
     public bool SelectItem(int slotIndex)
     {

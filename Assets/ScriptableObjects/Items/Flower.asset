@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Flower
   m_EditorClassIdentifier: 
   prefab: {fileID: 505634430451664136, guid: 7abd6569ac107514887ad595164e76ad, type: 3}
+  inGamePrefab: {fileID: 1434837010358469854, guid: ccafc013b401c914581d2b48142f59ce, type: 3}
   type: 0
   itemName: flower
   description: 

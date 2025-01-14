@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: BlueMushroom
   m_EditorClassIdentifier: 
   prefab: {fileID: 505634430451664136, guid: efc0f25456922fe4ba7cb20942e6bdd6, type: 3}
+  inGamePrefab: {fileID: 6301530590647719733, guid: 86c469a6174f8f648bf1db3c3cabd8cc, type: 3}
   type: 2
   itemName: 
   description: 
