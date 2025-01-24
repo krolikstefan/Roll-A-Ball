@@ -29,10 +29,7 @@ public class TextManager : MonoBehaviour
         infoText = GameObject.Find("infoText");
         if (scoreText != null)
         {
-            if (scoreTextComp!=null)
-            {
                 scoreTextComp = scoreText.GetComponent<Text>();
-            }
         }
         infoTextA = infoText.GetComponent<Text>();
 
@@ -53,12 +50,13 @@ public class TextManager : MonoBehaviour
         {
             teleporter.onTeleport += StandOnTeleport;
         }
+        if (inventory != null)
+        {
+            inventory.iWantToPickUpOrAmINot += PickUpText;
+            inventory.notAnymore += ClearInfoText;
 
-        inventory.iWantToPickUpOrAmINot += PickUpText;
-        inventory.notAnymore += ClearInfoText;
-
-        inventory.giveItem += GiveText;
-
+            inventory.giveItem += GiveText;
+        }
 
     }
 

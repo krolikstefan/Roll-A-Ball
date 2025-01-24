@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9a93e201954e4a24a89cdc33ff893502, type: 3}
+  m_Name: GreenSlime
+  m_EditorClassIdentifier: 
+  npcName: Green Slime
+  relationshipLevel: 0
+  likedGifts:
+  - {fileID: 11400000, guid: a7341d29e0311c0418a7a01c7ba1de33, type: 2}
+  - {fileID: 11400000, guid: 3284ab594e7313d4f9a9fa91ceea0d62, type: 2}
+  neutralGifts:
+  - {fileID: 11400000, guid: db0574903370e564690cb69993d43736, type: 2}
+  - {fileID: 11400000, guid: 5d3601f15f55e2e439693c10f317d6cf, type: 2}
+  dislikedGifts:
+  - {fileID: 11400000, guid: da724274654d6294f92d099c530fbaba, type: 2}
+  - {fileID: 11400000, guid: 02bfba354ecde224d8ccc9d1591792b6, type: 2}

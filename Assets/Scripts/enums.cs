@@ -1,13 +1,9 @@
 using UnityEngine;
-
-public enum Colors
+        
+public enum ItemType
 {
-    red, green, blue, pink, yellow
+    Miscellaneous, Gems, Consumables
 }
 
-public enum Categories
-{
-    food, education, hobby, clothes
-}
 
 

@@ -57,7 +57,7 @@ public class GameManager : MonoBehaviour
     }
     IEnumerator WaitForLoad()
     {
-        if (score == scoreToGet && SceneManager.GetActiveScene().buildIndex.Equals(3))
+        if (score == scoreToGet && SceneManager.GetActiveScene().buildIndex.Equals(4))
         {
             textManager.WinInfoText();
             yield return new WaitForSecondsRealtime(3);

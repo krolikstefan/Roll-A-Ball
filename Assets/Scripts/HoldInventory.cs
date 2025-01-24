@@ -1,21 +1,22 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public class HoldInventory : MonoBehaviour
 {
     public InventoryObject inventory;
 
     public int whatItemSelected;
-    public bool isItemSelected=false;
-    private bool isAdded=false;
+    public bool isItemSelected = false;
+    private bool isAdded = false;
     public static bool iWantToPickUpThisItem = false;
-    private bool isPlayerInTrigger=false;
+    private bool isPlayerInTrigger = false;
+    private NPCController npcInventory;
 
     public event Action iWantToPickUpOrAmINot;
     public event Action notAnymore;
     public event Action giveItem;
+    public event Action itemGiven;
+
 
     public void OnTriggerStay(Collider other)
     {
@@ -36,22 +37,31 @@ public class HoldInventory : MonoBehaviour
             }
             iWantToPickUpThisItem = false;
         }
+
         if (other.tag == "NPC")
         {
             giveItem?.Invoke();
+            isPlayerInTrigger = true;
+            npcInventory = other.GetComponent<NPCController>();
         }
     }
+
     public void OnTriggerExit(Collider other)
     {
-
         notAnymore?.Invoke();
         isPlayerInTrigger = false;
+
+        if (other.tag == "NPC")
+        {
+            npcInventory = null;
+        }
     }
 
     private void OnApplicationQuit()
     {
         inventory.container.Clear();
     }
+
     public void DropItemFromInventory()
     {
         if (!isItemSelected)
@@ -69,6 +79,7 @@ public class HoldInventory : MonoBehaviour
             }
         }
     }
+
     private void SpawnDroppedItem(ItemObject itemToDrop)
     {
         if (itemToDrop.inGamePrefab != null)
@@ -89,23 +100,32 @@ public class HoldInventory : MonoBehaviour
     private void Update()
     {
         for (int i = 0; i <= 9; i++)
-    {
-        if (Input.GetKeyDown(i == 0 ? KeyCode.Alpha0 : KeyCode.Alpha1 + (i - 1)))
         {
-            whatItemSelected = i == 0 ? 9 : i - 1;
-            SelectInventoryItem();
-            break;
+            if (Input.GetKeyDown(i == 0 ? KeyCode.Alpha0 : KeyCode.Alpha1 + (i - 1)))
+            {
+                whatItemSelected = i == 0 ? 9 : i - 1;
+                SelectInventoryItem();
+                break;
+            }
         }
-    }
-        if (Input.GetKeyDown(KeyCode.F)&&isPlayerInTrigger==true)
+
+        if (Input.GetKeyDown(KeyCode.F) && isPlayerInTrigger)
         {
-            HoldInventory.iWantToPickUpThisItem = true;
+            iWantToPickUpThisItem = true;
         }
+
         if (Input.GetKeyDown(KeyCode.C))
         {
             DropItemFromInventory();
         }
+
+        if (Input.GetKeyDown(KeyCode.G) && isPlayerInTrigger && npcInventory != null)
+        {
+            inventory.TransferItemToNPC(npcInventory.inventory);
+            itemGiven?.Invoke();
+        }
     }
+
     private void SelectInventoryItem()
     {
         if (inventory.SelectItem(whatItemSelected))
@@ -121,5 +141,4 @@ public class HoldInventory : MonoBehaviour
             isItemSelected = false;
         }
     }
-
 }

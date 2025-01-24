@@ -97,7 +97,6 @@ public class MovementController : MonoBehaviour
         {
             isJumpTrue = true;
             isGrounded = false;
-            //gameObject.transform.GetChild(0).gameObject.GetComponent<ParticleSystem>().Play();
             playerRb.AddForce(Vector3.up * jumpStrength, ForceMode.Impulse);
         }
 

@@ -2,7 +2,6 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 [CreateAssetMenu(fileName = "InventoryObject", menuName = "InventorySystem/InventoryObject")]
 public class InventoryObject : ScriptableObject
@@ -13,8 +12,6 @@ public class InventoryObject : ScriptableObject
 
     public InventorySlot selectedSlot;
     public event Action<InventorySlot> OnItemSelected;
-
-
     public bool AddItem(ItemObject itemToAdd, int howManyToAdd)
     {
         hasItem = false;
@@ -66,6 +63,7 @@ public class InventoryObject : ScriptableObject
         }
         return false;
     }
+
     public bool SelectItem(int slotIndex)
     {
         if (container == null || container.Count == 0)
@@ -88,6 +86,28 @@ public class InventoryObject : ScriptableObject
         return selectedSlot;
     }
 
+    public bool TransferItemToNPC(InventoryObject npcInventory)
+    {
+        if (selectedSlot == null || npcInventory == null) {
+            return false;
+        }
+        if (selectedSlot.amount <= 0) {
+            return false;
+        }
+        bool addedToNpc = npcInventory.AddItem(selectedSlot.item, 1);
+        if (addedToNpc)
+        {
+            selectedSlot.amount--;
+            if (selectedSlot.amount == 0)
+            {
+                container.Remove(selectedSlot);
+                selectedSlot = null;
+            }
+            return true;
+        }
+        return false;
+    }
+
 }
 
 [System.Serializable]
@@ -106,6 +126,4 @@ public class InventorySlot
     {
         amount += value;
     }
-
-
 }
