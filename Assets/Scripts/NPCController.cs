@@ -11,7 +11,8 @@ public class NPCController : MonoBehaviour
     private GameObject player;
     public InventoryObject inventory;
     private HoldInventory playerInventory;
-    private Image affectionImage;
+    private GameObject affectionImage;
+    private Image affectionImageA;
 
     private List<ItemObject> likedGiftsNpc = new List<ItemObject>();
     private List<ItemObject> neutralGiftsNpc = new List<ItemObject>();
@@ -20,7 +21,7 @@ public class NPCController : MonoBehaviour
 
     [SerializeField] private Sprite dislikeSprite;
     [SerializeField] private Sprite neutralSprite;
-    [SerializeField] private Sprite LikeSprite;
+    [SerializeField] private Sprite likeSprite;
 
 
     private void Start()
@@ -31,16 +32,9 @@ public class NPCController : MonoBehaviour
 
         player = GameObject.FindGameObjectWithTag("Player");
         playerInventory = player.GetComponent<HoldInventory>();
-        GameObject canvasObject = GameObject.Find("Canvas");
-        if (canvasObject != null)
-        {
-            affectionImage = canvasObject.transform.Find("AffectionImage")?.GetComponent<Image>();
-            if (affectionImage == null)
-            {
-                Debug.LogError("AffectionImage not found in Canvas.");
-            }
-        }
 
+        affectionImage = GameObject.Find("AffectionImage");
+        affectionImageA = affectionImage.GetComponent<Image>();
 
         playerInventory.itemGiven += ItemReceived;
     }
@@ -90,15 +84,15 @@ public class NPCController : MonoBehaviour
         {
             if (affectionPoints < 0)
             {
-                affectionImage.sprite = dislikeSprite;
+                affectionImageA.sprite = dislikeSprite;
             }
             else if (affectionPoints >= 0 && affectionPoints < 30)
             {
-                affectionImage.sprite = neutralSprite; ;
+                affectionImageA.sprite = neutralSprite; ;
             }
             else if (affectionPoints >= 50)
             {
-                affectionImage.sprite = LikeSprite;
+                affectionImageA.sprite = likeSprite;
             }
         }
     }

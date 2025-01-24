@@ -1,25 +1,12 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
+    private Dictionary<int, int> levelScores = new Dictionary<int, int>();
     public static GameManager gameManager;
-    private void Awake()
-    {
-
-        if (gameManager == null)
-        {
-            gameManager = this;
-        }
-
-        else
-        {
-            Destroy(gameObject);
-        }
-
-        DontDestroyOnLoad(this.gameObject);
-    }
 
     public GameObject[] collectibles;
     [HideInInspector] public int score = 0;
@@ -27,48 +14,90 @@ public class GameManager : MonoBehaviour
     private GameObject player;
     private GameObject manager;
     private MovementController controller;
-
     private TextManager textManager;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
 
-    void Start()
+    private void Awake()
+    {
+        if (gameManager == null)
+        {
+            gameManager = this;
+            DontDestroyOnLoad(this.gameObject);
+        }
+        else
+        {
+            Destroy(gameObject);
+        }
+    }
+
+    private void OnEnable()
+    {
+        SceneManager.sceneLoaded += OnSceneLoaded;
+    }
+
+    private void OnDisable()
+    {
+        SceneManager.sceneLoaded -= OnSceneLoaded;
+    }
+
+    private void OnSceneLoaded(Scene scene, LoadSceneMode mode)
+    {
+        InitializeSceneData();
+    }
+
+    private void InitializeSceneData()
     {
         player = GameObject.FindGameObjectWithTag("Player");
-        controller = player.GetComponent<MovementController>();
+        if (player != null)
+        {
+            controller = player.GetComponent<MovementController>();
+            controller.pickUpPoint -= AddPoint;
+            controller.pickUpPoint += AddPoint;
+        }
+
+        manager = GameObject.Find("TextManager");
+        if (manager != null)
+        {
+            textManager = manager.GetComponent<TextManager>();
+        }
 
         collectibles = GameObject.FindGameObjectsWithTag("point");
         scoreToGet = collectibles.Length;
 
-        manager = GameObject.Find("TextManager");
-        textManager=manager.GetComponent<TextManager>();
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
+        score = levelScores.ContainsKey(currentSceneIndex) ? levelScores[currentSceneIndex] : 0;
 
-
-        controller.pickUpPoint += AddPoint;
-        
+        if (textManager != null)
+        {
+            textManager.UpdateScoreText();
+        }
     }
 
-
-    private void AddPoint()
+    void AddPoint()
     {
-        score += 1;
-        textManager.UpdateScoreText();
-        StartCoroutine(WaitForLoad());
+        int currentSceneIndex = SceneManager.GetActiveScene().buildIndex;
 
+        if (!levelScores.ContainsKey(currentSceneIndex))
+        {
+            levelScores[currentSceneIndex] = 0;
+        }
+        levelScores[currentSceneIndex]++;
+        score = levelScores[currentSceneIndex];
+
+        if (textManager != null)
+        {
+            textManager.UpdateScoreText();
+        }
+
+        StartCoroutine(WaitForLoad());
     }
+
     IEnumerator WaitForLoad()
     {
-        if (score == scoreToGet && SceneManager.GetActiveScene().buildIndex.Equals(4))
+        if (score == scoreToGet)
         {
             textManager.WinInfoText();
             yield return new WaitForSecondsRealtime(3);
-            SceneManager.LoadScene(4);
-        }
-        else if (score == scoreToGet)
-        {
-            textManager.WinInfoText();
-            yield return new WaitForSecondsRealtime(3);
-            SceneManager.LoadScene(1);
+            SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
         }
     }
-
 }

@@ -1,0 +1,21 @@
+WSAD - poruszanie się
+lewy przycisk myszki (hold) - obrót kamerą
+klawisze 1-0 - wybór przedmiotów z ekwipunku 
+G - dawanie ZAZNACZONEGO prezentu
+C - wyrzuć ZAZNACZONY przedmiot z ekwipunktu (po jednym przedmiocie)
+F - interakcja z przedmiotami
+
+
+--------------------
+
+
+Poziomy relacji:
+Neutralny 0-30
+
+Lubiany >30
+
+Nielubiany <0
+
+--------------------
+3 lvl ze względu na mechanikę jest niewygrywalny, więc aby przejść do sceny końcowej 
+trzeba wejść w menu podręczne ESC -> Credits

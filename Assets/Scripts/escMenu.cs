@@ -17,6 +17,7 @@ public class EscMenu : MonoBehaviour
     public void StartGame()
     {
         SceneManager.LoadScene(1, LoadSceneMode.Single);
+        Time.timeScale = 1f;
     }
     public void ExitGame()
     {
@@ -26,6 +27,7 @@ public class EscMenu : MonoBehaviour
     public void LevelSelect()
     {
         SceneManager.LoadScene(1, LoadSceneMode.Single);
+        Time.timeScale = 1f;
     }
 
     public void Resume()
@@ -33,9 +35,15 @@ public class EscMenu : MonoBehaviour
         canvas.enabled = false;
         Time.timeScale = 1f;
     }
+    public void Credits()
+    {
+        SceneManager.LoadScene(5, LoadSceneMode.Single);
+        Time.timeScale = 1f;
+    }
     public void BackToMenu()
     {
         SceneManager.LoadScene(0, LoadSceneMode.Single);
+        Time.timeScale = 1f;
     }
 
     private void Update()

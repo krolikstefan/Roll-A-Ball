@@ -1,9 +1,10 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class AudioManager : MonoBehaviour
 {
-    //only of level 3 for now
     public static AudioManager audioManager;
+    private AudioSource audioSource;
     private void Awake()
     {
 
@@ -19,21 +20,16 @@ public class AudioManager : MonoBehaviour
 
         DontDestroyOnLoad(this.gameObject);
     }
-
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        audioManager.audioSource = GetComponent<AudioSource>();
+        audioSource.playOnAwake = true;
     }
 
     // Update is called once per frame
     void Update()
     {
         
-    }
-
-    private void ReceiveGift()
-    {
-
     }
 }

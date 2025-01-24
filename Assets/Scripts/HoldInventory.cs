@@ -18,6 +18,9 @@ public class HoldInventory : MonoBehaviour
     public event Action itemGiven;
 
 
+    public float keyCooldown = 0.5f; 
+    private float nextKeyPressTime = 0f; 
+
     public void OnTriggerStay(Collider other)
     {
         var item = other.GetComponent<Item>();
@@ -33,9 +36,9 @@ public class HoldInventory : MonoBehaviour
                 {
                     Destroy(other.gameObject);
                     notAnymore?.Invoke();
+                    iWantToPickUpThisItem = false;
                 }
             }
-            iWantToPickUpThisItem = false;
         }
 
         if (other.tag == "NPC")
@@ -61,6 +64,7 @@ public class HoldInventory : MonoBehaviour
     {
         inventory.container.Clear();
     }
+    
 
     public void DropItemFromInventory()
     {
@@ -109,8 +113,9 @@ public class HoldInventory : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.F) && isPlayerInTrigger)
+        if (Time.time >= nextKeyPressTime && Input.GetKeyDown(KeyCode.F)&&isPlayerInTrigger)
         {
+            nextKeyPressTime = Time.time + keyCooldown;
             iWantToPickUpThisItem = true;
         }
 
